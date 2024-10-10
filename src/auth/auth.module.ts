@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { FirebaseService } from '@project/shared';
+import { FirebaseService } from '../auth/firebase/firebase.service';
 
 @Module({
   controllers: [AuthController],

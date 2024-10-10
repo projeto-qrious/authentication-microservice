@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { FirebaseService } from '@project/shared';
+import { FirebaseService } from '../auth/firebase/firebase.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as admin from 'firebase-admin';
