@@ -2,12 +2,13 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
+  @MessagePattern({ cmd: 'register' })
+  async register(@Payload() createUserDto: CreateUserDto) {
     const userRecord = await this.authService.register(createUserDto);
     return {
       uid: userRecord.uid,
@@ -16,8 +17,8 @@ export class AuthController {
     };
   }
 
-  @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
+  @MessagePattern({ cmd: 'login' })
+  async login(@Payload() loginUserDto: LoginUserDto) {
     const token = await this.authService.login(loginUserDto);
     return {
       ...token,
@@ -25,8 +26,8 @@ export class AuthController {
     };
   }
 
-  @Post('verify-token')
-  async verifyToken(@Body('idToken') idToken: string) {
+  @MessagePattern({ cmd: 'verify-token' })
+  async verifyToken(@Payload('idToken') idToken: string) {
     const decodedToken = await this.authService.verifyToken(idToken);
     return {
       uid: decodedToken.uid,
