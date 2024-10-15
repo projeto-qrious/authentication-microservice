@@ -6,19 +6,14 @@ export class FirebaseService {
   private app: admin.app.App;
 
   constructor() {
-    const firebaseConfigBase64 = process.env.FIREBASE_CONFIG_BASE64;
-    if (!firebaseConfigBase64) {
-      throw new Error('FIREBASE_CONFIG_BASE64 environment variable is missing');
-    }
-
-    const serviceAccount = JSON.parse(
-      Buffer.from(firebaseConfigBase64, 'base64').toString('utf-8'),
-    );
-
     if (!admin.apps.length) {
       this.app = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: 'https://qrious-51310-default-rtdb.firebaseio.com/',
+        credential: admin.credential.cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        }),
+        databaseURL: process.env.FIREBASE_DATABASE_URL,
       });
     } else {
       this.app = admin.app();
