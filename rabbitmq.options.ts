@@ -3,7 +3,7 @@ import { RmqOptions, Transport } from '@nestjs/microservices';
 export const rabbitmqConfig = {
   transport: Transport.RMQ,
   options: {
-    urls: ['amqp://guest:guest@rabbitmq-3-management-xk33.onrender.com:5672'],
+    urls: [process.env.RABBITMQ_URL],
     queue: 'auth_queue',
     queueOptions: {
       durable: true,
