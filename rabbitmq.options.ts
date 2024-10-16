@@ -9,7 +9,7 @@ export const rabbitmqConfig = {
       durable: true,
     },
     socketOptions: {
-      heartbeatIntervalInSeconds: 60,
+      heartbeat: 60,
     },
   },
 } as RmqOptions;
