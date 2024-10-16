@@ -8,5 +8,6 @@ export const rabbitmqConfig = {
     queueOptions: {
       durable: true,
     },
+    heartbeat: 60,
   },
 } as RmqOptions;
