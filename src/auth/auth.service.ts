@@ -32,6 +32,7 @@ export class AuthService {
       .getDatabase()
       .ref(`users/${userRecord.uid}`)
       .set({
+        displayName,
         email,
         phoneNumber: phoneNumber || null,
         role: 'ATTENDEE',
