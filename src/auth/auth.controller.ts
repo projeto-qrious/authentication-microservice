@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -9,12 +9,22 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'register' })
   async register(@Payload() createUserDto: CreateUserDto) {
-    const userRecord = await this.authService.register(createUserDto);
-    return {
-      uid: userRecord.uid,
-      email: userRecord.email,
-      message: 'Usuário registrado com sucesso',
-    };
+    try {
+      const userRecord = await this.authService.register(createUserDto);
+      return {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        message: 'Usuário registrado com sucesso',
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @MessagePattern({ cmd: 'login' })
