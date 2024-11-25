@@ -7,6 +7,7 @@ import { FirebaseService } from '../auth/firebase/firebase.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as admin from 'firebase-admin';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +42,7 @@ export class AuthService {
 
       return userRecord;
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new RpcException(error.message);
     }
   }
 
