@@ -21,24 +21,28 @@ export class AuthService {
       );
     }
 
-    const userRecord = await this.firebaseService.getAuth().createUser({
-      email,
-      password,
-      displayName,
-      phoneNumber,
-    });
-
-    await this.firebaseService
-      .getDatabase()
-      .ref(`users/${userRecord.uid}`)
-      .set({
-        displayName,
+    try {
+      const userRecord = await this.firebaseService.getAuth().createUser({
         email,
-        phoneNumber: phoneNumber || null,
-        role: 'ATTENDEE',
+        password,
+        displayName,
+        phoneNumber,
       });
 
-    return userRecord;
+      await this.firebaseService
+        .getDatabase()
+        .ref(`users/${userRecord.uid}`)
+        .set({
+          displayName,
+          email,
+          phoneNumber: phoneNumber || null,
+          role: 'ATTENDEE',
+        });
+
+      return userRecord;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async login(loginUserDto: LoginUserDto): Promise<{ customToken: string }> {
